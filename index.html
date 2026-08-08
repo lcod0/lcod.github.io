@@ -3,30 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
+  <title>Your Name — Portfolio</title>
+  
+  <!-- Modern Google Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CSS Variables for quick color customization */
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+
+    /* Auto Dark Mode (respects user system settings) */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --border: #334155;
+      }
+    }
+
+    /* General Resets & Layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* Main Container Card */
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Header Section */
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Section Headings */
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    /* Skills Badges / Pills */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .skills-list li {
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Social/Contact Link Buttons */
+    .links-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Main Title -->
-  <h1>Hi, I'm Ling</h1>
+  <div class="container">
+    <header>
+      <h1>Hi, I'm Your Name 👋</h1>
+      <div class="subtitle">Software Developer & Designer</div>
+      <p>I build clean, user-friendly applications and love working on open-source projects.</p>
+      
+      <div class="links-group">
+        <a href="https://github.com" class="btn" target="_blank">GitHub Profile</a>
+        <a href="mailto:your.email@example.com" class="btn">Contact Me</a>
+      </div>
+    </header>
 
-  <!-- Subtitle / Tagline -->
-  <h2>Web Developer & Designer</h2>
+    <main>
+      <section>
+        <h2>About Me</h2>
+        <p>I'm currently focused on web development, modern frontend frameworks, and building clean interfaces. Welcome to my personal site hosted on GitHub Pages!</p>
+      </section>
 
-  <!-- Paragraph Text -->
-  <p>Welcome to my portfolio! I build websites and work on cool projects.</p>
-
-  <!-- Section Header -->
-  <h3>About Me</h3>
-  <p>Write a short bio about yourself here. Describe your skills, interests, and goals.</p>
-
-  <!-- Bullet List -->
-  <h3>Skills</h3>
-  <ul>
-    <li>HTML & CSS</li>
-    <li>JavaScript</li>
-    <li>Git & GitHub</li>
-  </ul>
+      <section>
+        <h2>Skills & Tools</h2>
+        <ul class="skills-list">
+          <li>HTML5 & CSS3</li>
+          <li>JavaScript</li>
+          <li>Git & GitHub</li>
+          <li>Responsive Design</li>
+        </ul>
+      </section>
+    </main>
+  </div>
 
 </body>
 </html>
