@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name — Portfolio</title>
+  <title>Ling — Portfolio</title>
   
   <!-- Modern Google Font (Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,25 +46,48 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       line-height: 1.6;
-      display: flex;
-      justify-content: center;
       padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Main Container Card */
+    /* Outer Wrapper to constrain maximum width across screens */
+    .layout-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* 3-Column Grid Layout */
+    .grid-3-col {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr; /* Center column is wider */
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Standard Card Styling */
     .container {
       width: 100%;
-      max-width: 680px;
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 40px;
+      padding: 32px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Full-Width Bottom Card */
+    .container-bottom {
+      width: 100%;
+      margin-top:10%;
     }
 
     /* Header Section */
     header {
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
     h1 {
@@ -90,33 +113,16 @@
     h2 {
       font-size: 1.25rem;
       font-weight: 600;
-      margin-top: 32px;
+      margin-top: 16px;
       margin-bottom: 16px;
       border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
     }
 
-    /* Skills Badges / Pills */
-    .skills-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      list-style: none;
-    }
-
-    .skills-list li {
-      background: var(--bg-color);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
     /* Social/Contact Link Buttons */
     .links-group {
       display: flex;
+      flex-wrap: wrap;
       gap: 12px;
       margin-top: 24px;
     }
@@ -127,7 +133,7 @@
       color: #ffffff;
       text-decoration: none;
       padding: 10px 18px;
-      border-radius: 8px;
+      border-radius: 100px;
       font-weight: 500;
       font-size: 0.875rem;
       transition: background-color 0.2s ease;
@@ -136,38 +142,72 @@
     .btn:hover {
       background-color: var(--primary-hover);
     }
+
+    /* Responsive adjustment for mobile devices */
+    @media (max-width: 868px) {
+      .grid-3-col {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <h1>Hi, I'm Your Name 👋</h1>
-      <div class="subtitle">Software Developer & Designer</div>
-      <p>I build clean, user-friendly applications and love working on open-source projects.</p>
+  <div class="layout-wrapper">
+    
+    <!-- Top Row: Left Sidebar, Main Container, Right Sidebar -->
+    <div class="grid-3-col">
       
-      <div class="links-group">
-        <a href="https://github.com" class="btn" target="_blank">GitHub Profile</a>
-        <a href="mailto:your.email@example.com" class="btn">Contact Me</a>
+      <!-- Left Sidebar Container -->
+      <aside class="container">
+        <h2>Resume</h2>
+        <a href="" class="btn" target="_blank">Resume (WIP)</a>
+      </aside>
+
+      <!-- Main Center Container -->
+      <div class="container">
+        <header>
+          <h1>Ling Xu</h1> <p>BTW, my full name is Ling-hui Xu</p>
+          <div class="subtitle">Second year EE student at UBC</div>
+        </header>
+
+        <main>
+          <section>
+            <h2>About Me</h2>
+            <p>Hello, I am currently a second year student at UBC and I am studying Electrical Engineering. I don't have much stuff yet but I'll include more things as I go.
+              If something intrests you, just click on it and find out! (if not, just gtfu rn bruh why u here)
+            </p>
+          </section>
+        </main>
       </div>
-    </header>
 
-    <main>
-      <section>
-        <h2>About Me</h2>
-        <p>I'm currently focused on web development, modern frontend frameworks, and building clean interfaces. Welcome to my personal site hosted on GitHub Pages!</p>
-      </section>
+      <!-- Right Sidebar Container -->
+      <aside class="container">
+        <h2>Useful Links</h2>
+        <div class="links-group">
+            <a href="" class="btn" target="_blank">Linkedin (WIP)</a>
+            <a href="" class="btn">Email (WIP)</a>
+            <a href="" class="btn">IDK</a>
+        </div>
+        
+      </aside>
 
-      <section>
-        <h2>Skills & Tools</h2>
-        <ul class="skills-list">
-          <li>HTML5 & CSS3</li>
-          <li>JavaScript</li>
-          <li>Git & GitHub</li>
-          <li>Responsive Design</li>
-        </ul>
-      </section>
-    </main>
+    </div>
+
+    <!-- Bottom Full-Width Container -->
+    <div class="container container-bottom">
+      <h1>Stuff I've done</h1>
+
+      <h2>The Inverted Pendulum</h2>
+      <p>What this is a rod that always tries to stay upright. Ever tried to balance a broom or anything long on your hand? This is just that but on 1 axis with a motor instead</p>
+      <a href="" class="btn" target="_blank">Link to the pendulum (WIP)</a>
+
+
+      <h2>A small stick driven by 2 motors that always points in the direction of my phone</h2>
+      <P>Exactly what the title says</P>
+      <a href="pendulum.html" class="btn" target="_blank">Link to the arm (WIP)</a>
+    </div>
+
   </div>
 
 </body>
