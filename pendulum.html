@@ -1,1 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Docs Style Template</title>
+  <style>
+    /* Global Reset & Base Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      background-color: #f8f9fa;
+      color: #202124;
+      font-family: 'Arial', 'Roboto', sans-serif;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 0 80px 0;
+    }
+
+    /* The "Paper" Container */
+    .document-page {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 816px; /* Standard 8.5in paper width */
+      min-height: 1056px; /* Standard 11in paper height */
+      padding: 72px 96px; /* 1-inch margins */
+      box-shadow: 0 1px 3px rgba(60,64,67,0.15), 0 1px 2px rgba(60,64,67,0.3);
+      border-radius: 1px;
+    }
+
+    /* Typography Styling */
+    .doc-main-title {
+      font-size: 26pt;
+      font-weight: 400;
+      color: #000000;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 20pt;
+      font-weight: 400;
+      color: #1f1f1f;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e0e0e0;
+      scroll-margin-top: 40px; /* Offset for smooth scroll jump */
+    }
+
+    h2 {
+      font-size: 15pt;
+      font-weight: 500;
+      color: #444746;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 11pt;
+      color: #3c4043;
+      margin-bottom: 16px;
+      text-align: justify;
+    }
+
+    a {
+      color: #1a73e8;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: #1557b0;
+    }
+
+    ul {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      padding-left: 28px; /* Indents the bullets like a Google Doc */
+      color: #3c4043;     /* Matching Google Docs text color */
+      list-style-type: disc;
+    }
+
+    li {
+      font-size: 11pt;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    /* Inline Media Elements */
+    .media-container {
+      margin: 24px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 12px;
+    }
+
+    .media-container img, 
+    .media-container video {
+      max-width: 100%;
+      height: auto;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .media-caption {
+      font-size: 11pt;
+      color: #70757a;
+      margin-top: 8px;
+    }
+
+    /* Jump-to-H1 Outline Sidebar (Appears on Scroll Only) */
+    .scroll-outline {
+      position: fixed;
+      right: 16px;
+      top: 40px;
+      width: 210px;
+      background: #ffffff;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 10px rgba(60,64,67,0.18);
+      z-index: 100;
+      
+      /* Hidden by default with smooth opacity and position transitions */
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Visible state when scrolling or hovered directly */
+    .scroll-outline.is-scrolling,
+    .scroll-outline:hover {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .scroll-outline-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #70757a;
+      margin-bottom: 10px;
+    }
+
+    .outline-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .outline-item {
+      font-size: 13px;
+      color: #5f6368;
+      text-decoration: none;
+      padding: 5px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .outline-item:hover {
+      background-color: #f1f3f4;
+      color: #1a73e8;
+    }
+
+    .outline-item.active {
+      background-color: #e8f0fe;
+      color: #1967d2;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Right Jump-to-H1 Navigation Box -->
+  <nav class="scroll-outline" id="outlineSidebar">
+    <div class="scroll-outline-title">Outline (Jump to H1)</div>
+    <ul class="outline-list" id="outlineList">
+      <!-- Populated automatically via JavaScript -->
+    </ul>
+  </nav>
+
+  <!-- White Paper Page -->
+  <main class="document-page">
+
+    <!-- Document Main Title -->
+    <h0 class="doc-main-title">The Inverted Pendulum</h0>
+    <P></P>
+    <p>This is basically just an arm being balanced upside down using a motor.</p>
+
+    <!--working demonstration-->
+    <div class="media-container">
+      <iframe 
+        src="https://drive.google.com/file/d/1Deyw-oNrWv6Jnwo1R7nU--hzZCXA3bQT/preview" 
+        width="100%" 
+        height="500" 
+        allow="autoplay" 
+        style="border: 10; border-radius: 0px;">
+      </iframe>
+      <div class="media-caption">Working demonstration of the thing (WIP)</div>
+    </div>
+
+    <!-- Chapter 1 -->
+    <h1 id="section-1">Chapter 1: The beginnings</h1>
+    <p>A few weeks after I went onto my summer break in uni, I saw this thing online that was a 
+      double or triple pendulum and I was like “I could do that” so I thought about it for a bit
+      and I came up with 2 possible designs.</p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Design 1 (WIP)</div>
+    </div>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Design 2 (WIP)</div>
+    </div>
+
+    <p>If you saw in the video demonstration, you saw I went with option 2. Why you might ask: it was because I thought the belt was cooler.
+    That’s it. I know it's a really bad engineering practice but cool > functionality am I right?</p>
+    
+    <p>So I proceed with Design number 2 and I started out in Fusion 360/Autodesk Fusion.</p>
+
+
+    <!-- Chapter 2 -->
+    <h1 id="section-2">Chapter 2: The physical design</h1>
+    
+    <p>The basic components I used were:</p>
+    <ul>
+      <li>A nema 17 stepper motor (like those 17 dollar ones)
+      <li>A AS5600 magnetic encoder</li>
+      <li>A temu arduino uno</li>
+      <li>A timing belt from a broken breadmaker</li>
+      <li>A A4988 stepper motor driver</li>
+      <li>Lots of wires</li>
+      <li>And basic components (like LEDs, potentiometers, resistors and capacitors).</li>
+    </ul>
+
+    <p>My first thought was something like this:</p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Initial Design concept (WIP)</div>
+    </div>
+
+    <p>Where there would be a motor (on the left) in some sort of 3D printed mount that was screwed into the base made out of a material.
+      I ended up choosing wood for the large rectangular base. 
+      Then on the right, there would be some sort of tensioner and sitting on the motor and tensioner would be a timing belt. 
+      On the timing belt, there would be some sort of mechanism that could hold a measurement device to measure the pendulum’s tilt 
+      and move the pendulum along the belt.
+    </p>
+
+    <ul>
+      <li>Why did I choose a timing belt? Well, the main reason was because a bread maker that we owned just broke. 
+        I just disassembled it and I saw that it had a timing belt. 
+        Also, it’s much more precise than a regular belt (like a rubber band) and it would allow me to actually clamp something onto the belt
+         and move it freely.</li>
+    </ul>
+
+    <p>After coming up with that initial design that seemed to work, I went ahead and started designing.
+       The base ended up looking like this:
+    </p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Where the thing inside is the stepper motor and the thing surrounding it is the actual base. (WIP)</div>
+    </div>
+
+    <p>Next I modelled the tensioner: </p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">(Side note: holy crap rendering these almost made my laptop explode) (WIP)</div>
+    </div>
+
+    <p>Now, I had made something that could hold the belt together but to actually drive the belt, I needed to make some timing pulleys.</p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Timing pulleys (WIP)</div>
+    </div>
+
+    <p>Putting it all together and we get this:</p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">Entire design for now (WIP)</div>
+    </div>
+
+    <p>But now you might be saying, on the tensioner side, why is there a screw holding it and not the thing inside the render above? 
+      That’s because I tried it and turns out, plastic is far too weak for tensioning it so I used a metal piece instead.
+    </p>
+
+    <p>However, we need to control the pendulum so I designed a clamp plate and a cover to mount an encoder to measure the stick and I thought that was that. 
+      So simple to make! (it was not).
+    </p>
+
+    <p>My first design looked like this: a PLA rod with a cylinder that could rotate along with the “lid” that you see. 
+      Turns out, PLA is super light (unless you want 100% infill which is really expensive and takes days to print) and that arm was way too short. 
+      Also plastic on plastic has enormous friction so it wouldn’t even move.
+    </p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">clamp plate v1</div>
+    </div>
+
+    <p>Learning that, I made a new design: This “lid” and “pendulum adapter” would be held together by a bearing 
+      so that it could actually move and a welding rod so that it had weight and could actually move.
+    </p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">v2 with bearing</div>
+    </div>
+
+    <p>Turns out, timing belts are quite flimsy so when I put it onto my belt and added the rod, it would wobble a lot.
+      So I moved onto my next design: The only thing that changed was the “lid” and I added a larger base so it could actually stay upright.
+    </p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">v3 lid with large base for balancing</div>
+    </div>
+
+    <p>Thus, it was finished so I started working on the actual measurement device which was an encoder (the AS5600).</p>
+
+    <!-- chapter 3 -->
+    <h1 id="section-3">Chapter 3: The encoder</h1>
+    <p>Now, I’m going to be completely honest, just making the encoder function properly took like a month because of a few things.</p>
+
+    <div class="media-container">
+      <video controls poster="https://picsum.photos/id/1015/1000/500">
+        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="media-caption">Video 1.1: Sample HTML5 video playback embedded inline.</div>
+    </div>
+
+    <p style="margin-bottom: 0px">Issue 1: Encoder kept disconnecting</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>Fix: use better and tighter wires</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 2: Wires will come loose due to vibrations from motor</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>FIx: use hot glue to secure wires</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 3: wires too long because the AS5600 uses I2C</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>Fix: use pull-up resistors (calculated to be around 3.3k ohms)</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 4: motor makes a lot of electrical noise</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>Separate rails and add a low pass filter (use a capacitor)</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 5: Encoder disconnected which would brick my arduino</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>Fix: catch the errors early</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 6: wires too long for I2C</p>
+    <ul style="margin-top: 0px; margin-bottom: 0px;"><li>Fix: Decrease pull up resistor resistance and decrease length wherever possible</li></ul>
+    <p style="margin-bottom: 0px; margin-top: 0px;">Issue 7: stepper motor produces a lot of EMI that could corrupt the signal along the way or give false readings</p>
+    <ul style="margin-top: 0px"><li>Fix: coil wires and pray (it worked)</li></ul>
+
+    <p>After all these issues, I could actually read the data and perform some action that could make it stay upright</p>
+
+
+
+    <!-- Chapter 4 -->
+    <h1>Chapter 4: Finding “up” part 1</h1>
+
+    <p>Now before I could implement PID or LQR or state feedback or any other feedback algorithm, I actually had to tell which way was up.</p>
+    <p>Now because I was an idiot, I made the design like this:</p>
+
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption"></div>
+    </div>
+
+    <p>See how the rod can’t actually point fully down? That means I had to do something like this:</p>
+
+    <div class="media-container">
+      <img src="" alt="Sample Landscape">
+      <div class="media-caption">The explination</div>
+    </div>
+
+    <p>But the problem was that, whenever I tried to add new code updates, the 95 degree offset would slightly change to like 94.5 or 95.5 degrees.</p>
+    <p>Now if you’re reading that and ask yourself, isn’t that fine? Just use a cascade PID and it will probably fix it.
+      Well, I didn’t actually know that cascade PIDs existed when I was at this point in the project. 
+      So what did I do? I switched designs.
+      (BTW this was the <a href="" target="_blank" rel="noopener">code (WIP)</a> for the first design)</p>
+
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const h1Headings = document.querySelectorAll('.document-page h1');
+      const outlineList = document.getElementById('outlineList');
+      const outlineSidebar = document.getElementById('outlineSidebar');
+
+      // 1. Populate Jump-To List Dynamically
+      h1Headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = `h1-section-${index}`;
+        }
+
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.classList.add('outline-item');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        
+        // Smooth scroll jump on click
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          heading.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        listItem.appendChild(link);
+        outlineList.appendChild(listItem);
+      });
+
+      // 2. Show sidebar while scrolling & hide after scrolling stops
+      let scrollTimeout;
+      const FADE_DELAY_MS = 1200; // Time in milliseconds before hiding
+
+      window.addEventListener('scroll', () => {
+        // Show outline when scroll activity occurs
+        outlineSidebar.classList.add('is-scrolling');
+
+        // Reset timer on active scroll
+        clearTimeout(scrollTimeout);
+
+        // Hide outline after user stops scrolling for 1.2 seconds
+        scrollTimeout = setTimeout(() => {
+          outlineSidebar.classList.remove('is-scrolling');
+        }, FADE_DELAY_MS);
+      });
+
+      // 3. Highlight current H1 section in the outline
+      const observerOptions = {
+        root: null,
+        rootMargin: '-10% 0px -70% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.getAttribute('id');
+            document.querySelectorAll('.outline-item').forEach(item => {
+              if (item.getAttribute('href') === `#${activeId}`) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      h1Headings.forEach(heading => observer.observe(heading));
+    });
+  </script>
+</body>
+</html>
