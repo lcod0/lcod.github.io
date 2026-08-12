@@ -22,6 +22,7 @@
       --primary-hover: #1d4ed8;
       --border: #e2e8f0;
       --radius: 12px;
+      --edge-color: #000000; /* Dark vignette edge color */
     }
 
     /* Auto Dark Mode */
@@ -31,7 +32,8 @@
         --card-bg: #1e293b;
         --text-main: #f8fafc;
         --text-muted: #94a3b8;
-        --border: #334155;
+        --border: #060606;
+        --edge-color: #000312; /* Deeper black/navy edge for dark mode */
       }
     }
 
@@ -44,13 +46,22 @@
 
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-color);
+      /* Gradient fading from edge-color on sides to bg-color in the middle */
+      background: linear-gradient(
+        90deg, 
+        var(--edge-color) 0%, 
+        var(--bg-color) 25%, 
+        var(--bg-color) 75%, 
+        var(--edge-color) 100%
+      );
+      background-attachment: fixed; /* Keeps gradient stationary during scroll */
       color: var(--text-main);
       line-height: 1.6;
       padding: 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     .layout-wrapper {
@@ -108,7 +119,6 @@
     .container {
       width: 100%;
       background: var(--card-bg);
-      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 32px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -193,7 +203,6 @@
       <a href="https://www.linkedin.com/in/ling-xu-558894280/" class="nav-link" target="_blank">LinkedIn</a>
       <a href="mailto:xu12233445@gmail.com" class="nav-link">Contact me</a>
       <a href="" class="nav-link">temps</a>
-
     </nav>
 
     <!-- Main Profile Card -->
@@ -207,8 +216,8 @@
       </header>
 
       <section>
-        <h2 style = "text-align: center;">About Me</h2>
-        <p style = "text-align: center;">Hello, I am currently a second year student at UBC studying Electrical Engineering. I don't have much stuff here yet, but I'll include more as I go. If something interests you, click on it to find out more!</p>
+        <h2 style="text-align: center;">About Me</h2>
+        <p style="text-align: center;">Hello, I am currently a second year student at UBC studying Electrical Engineering. I don't have much stuff here yet, but I'll include more as I go. If something interests you, click on it to find out more!</p>
       </section>
     </main>
 
