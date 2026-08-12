@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* CSS Variables for quick color customization */
+    /* CSS Variables */
     :root {
       --bg-color: #f8fafc;
       --card-bg: #ffffff;
@@ -23,7 +23,7 @@
       --radius: 12px;
     }
 
-    /* Auto Dark Mode (respects user system settings) */
+    /* Auto Dark Mode */
     @media (prefers-color-scheme: dark) {
       :root {
         --bg-color: #0f172a;
@@ -34,7 +34,7 @@
       }
     }
 
-    /* General Resets & Layout */
+    /* Resets & Layout */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -52,24 +52,58 @@
       align-items: center;
     }
 
-    /* Outer Wrapper to constrain maximum width across screens */
     .layout-wrapper {
       width: 100%;
-      max-width: 1200px;
+      max-width: 840px; /* Constrained for single-column readability */
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
-    /* 3-Column Grid Layout */
-    .grid-3-col {
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr; /* Center column is wider */
-      gap: 24px;
-      align-items: start;
+    /* Top Navigation (Right-Aligned) */
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 38px;
+      width: 100%;
+      padding: 4px 0;
     }
 
-    /* Standard Card Styling */
+    .nav-link {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.05s ease;
+    }
+
+    /* Smooth underline fade-in effect on hover */
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary);
+      opacity: 0;
+      transform: scaleX(1.5);
+      transition: opacity 0.05s ease, transform 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .nav-link:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card Containers */
     .container {
       width: 100%;
       background: var(--card-bg);
@@ -79,17 +113,29 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    /* Full-Width Bottom Card */
-    .container-bottom {
-      width: 100%;
-      margin-top: 10%;
-    }
-
-    /* Header Section */
+    /* Header Profile Layout */
     header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
       margin-bottom: 24px;
     }
 
+    .header-text {
+      flex: 1;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    /* Typography & Buttons */
     h1 {
       font-size: 2rem;
       font-weight: 700;
@@ -109,22 +155,13 @@
       margin-bottom: 16px;
     }
 
-    /* Section Headings */
     h2 {
       font-size: 1.25rem;
       font-weight: 600;
-      margin-top: 16px;
-      margin-bottom: 16px;
+      margin-top: 24px;
+      margin-bottom: 12px;
       border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
-    }
-
-    /* Social/Contact Link Buttons */
-    .links-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
     }
 
     .btn {
@@ -132,33 +169,16 @@
       background-color: var(--primary);
       color: #ffffff;
       text-decoration: none;
-      padding: 10px 18px;
+      padding: 8px 16px;
       border-radius: 100px;
       font-weight: 500;
       font-size: 0.875rem;
       transition: background-color 0.2s ease;
+      margin-bottom: 12px;
     }
 
     .btn:hover {
       background-color: var(--primary-hover);
-    }
-
-    /* Responsive adjustment for mobile devices */
-    @media (max-width: 868px) {
-      .grid-3-col {
-        grid-template-columns: 1fr;
-      }
-
-      /* Controls visual stacking order on smaller screens */
-      .main-content {
-        order: 1; /* Main box comes first */
-      }
-      .left-sidebar {
-        order: 2; /* Resume box comes second */
-      }
-      .right-sidebar {
-        order: 3; /* Links box comes third */
-      }
     }
   </style>
 </head>
@@ -166,56 +186,43 @@
 
   <div class="layout-wrapper">
     
-    <!-- Top Row: Left Sidebar, Main Container, Right Sidebar -->
-    <div class="grid-3-col">
-      
-      <!-- Left Sidebar Container -->
-      <aside class="container left-sidebar">
-        <h2>Resume</h2>
-        <a href="https://lcod0.github.io/Resume%20(Ling%202026).pdf" class="btn" target="_blank">Resume</a>
-      </aside>
+    <!-- Top Right Nav Links -->
+    <nav class="top-nav">
+      <a href="https://lcod0.github.io/Resume%20(Ling%202026).pdf" class="nav-link" target="_blank">Resume</a>
+      <a href="https://www.linkedin.com/in/ling-xu-558894280/" class="nav-link" target="_blank">LinkedIn</a>
+      <a href="mailto:xu12233445@gmail.com" class="nav-link">Contact me</a>
+      <a href="" class="nav-link">temps</a>
 
-      <!-- Main Center Container -->
-      <div class="container main-content">
-        <header>
+    </nav>
+
+    <!-- Main Profile Card -->
+    <main class="container">
+      <header>
+        <div class="header-text">
           <h1>Ling Xu</h1> <p>or Ling-hui Xu</p>
           <div class="subtitle">Second year EE student at UBC</div>
-        </header>
-
-        <main>
-          <section>
-            <h2>About Me</h2>
-            <p>Hello, I am currently a second year student at UBC and I am studying Electrical Engineering. I don't have much stuff yet but I'll include more things as I go.
-              If something intrests you, just click on it and find out!
-            </p>
-          </section>
-        </main>
-      </div>
-
-      <!-- Right Sidebar Container -->
-      <aside class="container right-sidebar">
-        <h2>Useful Links</h2>
-        <div class="links-group">
-            <a href="https://www.linkedin.com/in/ling-xu-558894280/" class="btn" target="_blank">Linkedin</a>
-            <a href="mailto:xu12233445@gmail.com" class="btn">Email</a>
-            <a href="" class="btn">temps</a>
         </div>
-      </aside>
+        <img src="profile.jpg" alt="Ling Xu (WIP)" class="profile-pic">
+      </header>
 
-    </div>
+      <section>
+        <h2 style = "text-align: center;">About Me</h2>
+        <p style = "text-align: center;">Hello, I am currently a second year student at UBC studying Electrical Engineering. I don't have much stuff here yet, but I'll include more as I go. If something interests you, click on it to find out more!</p>
+      </section>
+    </main>
 
-    <!-- Bottom Full-Width Container -->
-    <div class="container container-bottom">
+    <!-- Bottom Projects Card -->
+    <section class="container">
       <h1>Stuff I've done</h1>
 
       <h2>The Inverted Pendulum</h2>
-      <p>What this is a rod that always tries to stay upright. Ever tried to balance a broom or anything long on your hand? This is just that but on 1 axis with a motor instead</p>
-      <a href="https://lcod0.github.io/pendulum.html" class="btn" target="_blank">Link to the pendulum</a>
+      <p>A rod that always tries to stay upright. Ever tried to balance a broom on your hand? This works on the same principle across 1 axis using a motor.</p>
+      <a href="https://docs.google.com/document/d/1Zjh9BGj0_H7P6qHLoL7mPbpQ875wqLTA-a3WVcC3vu8/edit?tab=t.pkyv22pi968t" class="btn" target="_blank">Link to the pendulum</a>
 
-      <h2>A small stick driven by 2 motors that always points in the direction of my phone</h2>
-      <p>Exactly what the title says</p>
+      <h2>Parallel-Oriented Tracking Device</h2>
+      <p>A small stick driven by 2 motors that always points in the direction of my phone.</p>
       <a href="https://docs.google.com/document/d/1Zjh9BGj0_H7P6qHLoL7mPbpQ875wqLTA-a3WVcC3vu8/edit?tab=t.5dmobmg36e3k" class="btn" target="_blank">Link to the arm (docs)</a>
-    </div>
+    </section>
 
   </div>
 
