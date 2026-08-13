@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel-Oriented Tracking Device</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #202124;
+            line-height: 1.6;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Top Left Back Button with White Translucent Circle Effect */
+        .back-btn-container {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #3c4043;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .back-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* Long Continuous Paper Sheet */
+        .doc-paper {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 850px;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 96px;
+            box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15), 0 1px 2px 0 rgba(60, 64, 67, 0.3);
+            border-radius: 4px;
+        }
+
+        /* Typography & Content Styles */
+        h1 {
+            font-size: 32px;
+            font-weight: 400;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            color: #202124;
+            border-bottom: 1px solid #e8eaed;
+            padding-bottom: 8px;
+        }
+
+        h1:first-of-type {
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: #5f6368;
+        }
+
+        p {
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        /* Media Support (Images & Videos) */
+        .media-container {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .media-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #dadce0;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 4px;
+            border: 1px solid #dadce0;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Right-Side Trigger & TOC Container */
+        .toc-trigger-zone {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100vh;
+            z-index: 998;
+        }
+
+        .toc-container {
+            position: fixed;
+            top: 50%;
+            right: 24px;
+            transform: translateY(-50%) scale(0.95);
+            width: 260px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+            z-index: 999;
+        }
+
+        /* Show TOC when hovering either the trigger zone or TOC itself */
+        .toc-trigger-zone:hover ~ .toc-container,
+        .toc-container:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1);
+        }
+
+        .toc-container h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5f6368;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #e8eaed;
+            padding-bottom: 6px;
+        }
+
+        .toc-container ul {
+            list-style: none;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .toc-container li {
+            margin-bottom: 8px;
+        }
+
+        /* Sidebar link styles: Gray by default, turns Blue on hover */
+        .toc-container a {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.15s ease;
+        }
+
+        .toc-container a:hover {
+            color: #1a73e8;
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments for mobile screens */
+        @media (max-width: 900px) {
+            .doc-paper {
+                padding: 32px;
+            }
+            .toc-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Left Back Button -->
+    <div class="back-btn-container">
+        <a href="#" class="back-btn" title="Go back">&larr;</a>
+    </div>
+
+    <!-- Right Side Invisible Hover Trigger -->
+    <div class="toc-trigger-zone"></div>
+
+    <!-- Right Side Table of Contents Container -->
+    <div class="toc-container">
+        <h3>Document Outline</h3>
+        <ul id="toc-list">
+            <!-- Dynamically populated via JavaScript -->
+        </ul>
+    </div>
+
+    <div class="doc-paper">
+        <!--Chapter 1-->
+        <h1 id="Chapter 1: The beginning">Chapter 1: The beginning</h1>
+
+        <p>
+            So I first thought of this thing when I was looking at my phone and I thought to myself,
+            wait I wonder if I could make something point in the same direction as my phone?
+        </p>
+
+        <p>
+            I also saw this thing online where they were pointing a laser using 2 motors and I was like "I could do that"
+        </p>
+
+        <div class="media-container">
+            <div class="video-wrapper">
+                <iframe src="https://drive.google.com/file/d/1DHQVThGAoqpW2XWkdhXwDlfpN22YPGkd/preview" title="Embedded YouTube Video" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <p>
+            If it looks bad, that's because it is. Go to the end of the document by scrolling or moving the mouse to the right.
+        </p>
+
+
+        <!--Chapter 2-->
+        <h1 id="Chapter 2: The physical Design">Chapter 2: The physical Design</h1>
+        
+        <P>
+            These are the materials I used for this project:
+        </P>
+
+        <ul style = "padding-left: 40px;">
+            <li>Arduino uno R3</li>
+            <li>ZS-040 bluetooth chip</li>
+            <li>2 stepper motors with 2 A4988 drivers</li>
+            <li>AS5600 encoder</li>
+            <li>Power bank</li>
+            <li>18V Milwaukee drill battery</li>
+        </ul>
+
+        <p style = "padding-top: 15px;">
+            The first part was actually making the motor move but theres infinite tutorials online for that so I'm gonna gloss over it.
+        </p>
+
+        <p>
+            After making the motor move, my first design looked like this:
+        </p>
+
+        <div style = "overflow: hidden;" class="media-container">
+            <img style = "transform: scale(2);" src="https://lh3.googleusercontent.com/d/1l-7JMyhr1SmHP1tq9p6WDAMWgw8ewYh4" alt="WIP">
+        </div>
+
+        <p>
+            Where the raised borders near the top would contain the second motor to actually point in a direction.
+        </p>
+        <p>
+            However, this issue had a major flaw that I didn't see. It was the fact that when the motor spinned, the top plate combined with the motor
+            had a lot of inertia. And so, the hole in the center that fit around the shaft of the motor became loose.
+        </p>
+        <p>
+            So why is this bad? It was because I was counting the steps I sent to the motor, not the actual rotation that moved. So the computer would say
+            "yup, I turned 90 degrees" but in reality, the disk slipped and it only turned 45 degrees. This would only worsen over time so I had to change designs.
+        </p>
+
+        <p>
+            So my second design looked like this:
+        </p>
+
+        <div style = "overflow: hidden;" class="media-container">
+            <img style = "transform: scale(1.5);" src="https://lh3.googleusercontent.com/d/176JDQsu1c-VtRg-9_pRnqMnEfnbN_8xs" alt="WIP">
+        </div>
+
+        <p>
+            This design actually incoporates an encoder on the side so that I could actually measure how much it spun.
+        </p>
+        <p>
+            Now, why is it on a completly different "island" from the motor? Well, the main reason was because I couldn't find a good way to put
+            the encoder on the motor, so I just transfered the rotational force from the first disk onto the second disk where I could measure it.
+            Then I can just fix it in software by inverting the tracked amount.
+        </p>
+        <p>
+            Also, the main reason why I made the second disk the same size was because it was easy to model the teeth.
+            I could've made it smaller and fixed it in software but that sounded like too much work. So I just waited for like 3 more hours for it to print.
+        </p>
+
+        <h1 id="Chapter 3: Linking the phone">Chapter 3: Linking the phone</h1>
+
+        <p>
+            So no matter where I searched, I could not find an app that could send both the azimuth and the pitch at the same time.
+            So what I did was I built my own app using MIT app inventor. Now this website is basically scratch but with extra blocks so I just used that.
+        </p>
+
+        <p>
+            On the surface, it seems simple. Just find the phone’s direction that it's pointing in and then copy the movements, 
+            but how do you actually find the direction? I settled on using the gyroscope of the phone and something called the “orientation sensor”.
+        </p>
+
+        <ul style = "padding-left: 40px;">
+            <li>The gyroscope provides angular velocity, so we can just take the integral to find where we are actually pointing in.</li>
+            <li>
+                The orientation sensor is built into an android phone which essentially works as a compass by combining the magnetic field of the earth 
+                and the accelerometer to figure out which way is “down” (center of the earth) to find the direction relative to north.
+            </li>
+        </ul>
+
+        <p style="padding-bottom: 0px;">
+            By combining these 2 sensors with a complementary filter, we can measure pretty accurately which direction it's pointing in.
+        </p>
+        <p style = "padding-top: 0px;">
+            <i>
+                Note: a complementary filter works by combining basically
+                the fast but slightly inaccurate angle from the gyroscope with
+                the slow but accurate angle from the orientation sensor.
+            </i>
+        </p>
+
+        <p>
+            So now, I just sent everything to the arduino, and this is the <a href="https://drive.google.com/file/d/1i1Oc1mFtM3awosUIg5tcDtU9sFCjj7sl/view?usp=sharing"> link</a> for it.
+        </p>
+
+        <h1 id="Chapter 4: Limitations">Chapter 4: Limitations</h1>
+
+        <p>
+            As you see in the video, it’s kind of choppy.
+            This is mainly because I cannot send infinite amounts of data through bluetooth because it will get “clogged”.
+            Think of putting too much toilet paper down a toilet and now you have to wait a long time for it to slowly clear up.
+            Same thing here.
+        </p>
+
+        <p>
+            If you also look in the video, why is there a tape measurer on there?
+            It was because the right gear is actually really light and I hoped it would be held down by gravity.
+            But gravity couldn’t win so I used a tape measurer (the first weight I saw) and just slapped it on there.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const h1Elements = document.querySelectorAll('.doc-paper h1');
+            const tocList = document.getElementById('toc-list');
+
+            h1Elements.forEach((h1, index) => {
+                if (!h1.id) {
+                    h1.id = 'heading-' + (index + 1);
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = h1.textContent;
+
+                // Smooth scroll handling without updating the URL bar
+                a.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    h1.scrollIntoView({ behavior: 'smooth' });
+                });
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
